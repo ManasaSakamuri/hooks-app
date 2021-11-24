@@ -1,14 +1,39 @@
 import logo from './logo.svg';
 import './App.css';
-import CounterOne from './components/reducerhook/CounterOne';
-import CounterTwo from './components/reducerhook/CounterTwo';
-import CounterThree from './components/reducerhook/CounterThree';
+import React from 'react';
+
+import CompA from './components/contextNreducer/CompA';
+import CompB from './components/contextNreducer/CompB';
+import CompC from './components/contextNreducer/CompC';
+import DataFetching from './components/hooks/DataFetching';
+import DataFetchingTwo from './components/useResucercases/DataFetchingTwo';
+
+export const CountContext = React.createContext()
+const initialState = 0
+
+const reducer = (state, action) => {
+  switch (action) {
+    case 'increment': return state + 1
+    case 'decrement': return state - 1
+    case 'reset': return initialState
+    default: return state
+  }
+}
 
 function App() {
+  const [count, dispatch] = useReducer(reducer, initialState)
   return (
-    <div className="App">
-      <CounterThree/>
-    </div>
+    <CountContext.Provider
+      value={
+        { countState: count, countDispatch: dispatch }
+      }>
+      <div className="App">
+        <CounterThree />
+        Count in app.js is {count}
+        <DataFetching/>
+        <DataFetchingTwo/>
+      </div>
+    </CountContext.Provider>
   );
 }
 
